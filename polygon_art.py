@@ -1,75 +1,132 @@
 import turtle
 import random
 
-class Polygon:
-    def __init__(self, size, x, y, vx, vy, color):
-        self.size = size
-        self.x = x
-        self.y = y
-        self.vx = vx
-        self.vy = vy
-        self.color = color
 
-    def draw_polygon(self, num_sides, size, orientation, location, color, border_size):
-        turtle.penup()
-        turtle.goto(location[0], location[1])
-        turtle.setheading(orientation)
-        turtle.color(color)
-        turtle.pensize(border_size)
-        turtle.pendown()
-        for _ in range(num_sides):
-            turtle.forward(size)
-            turtle.left(360/num_sides)
-        turtle.penup()
+def draw_polygon(num_sides, size, orientation, location, color, border_size):
+    turtle.penup()
+    turtle.goto(location[0], location[1])
+    turtle.setheading(orientation)
+    turtle.color(color)
+    turtle.pensize(border_size)
+    turtle.pendown()
+    for _ in range(num_sides):
+        turtle.forward(size)
+        turtle.left(360/num_sides)
+    turtle.penup()
 
 
-    def get_new_color(self):
-        return (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
-
-    def move(self):
-        # specify a reduction ratio to draw a smaller polygon inside the one above
-        reduction_ratio = 0.618
-
-        # reposition the turtle and get a new location
-        turtle.penup()
-        turtle.forward(self.size * (1 - reduction_ratio) / 2)
-        turtle.left(90)
-        turtle.forward(self.size * (1 - reduction_ratio) / 2)
-        turtle.right(90)
-        location[0] = turtle.pos()[0]
-        location[1] = turtle.pos()[1]
-
-        # adjust the size according to the reduction ratio
-        size *= reduction_ratio
-
-        # draw the second polygon embedded inside the original
-        draw_polygon(num_sides, size, orientation, location, color, border_size)
-        # hold the window; close it by clicking the window close 'x' mark
-        turtle.done()
+def get_new_color():
+    return (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
 
 
-
-
-class DrawPolygon:
-    def __init__(self, choice):
-        self.choice = choice
+class Draw:
+    def set_background(self):
         turtle.speed(0)
         turtle.bgcolor('black')
         turtle.tracer(0)
         turtle.colormode(255)
-        for i in range(self.choice):
-            # draw a polygon at a random location, orientation, color, and border line thickness
-            num_sides = random.randint(3, 5)  # triangle, square, or pentagon
-            size = random.randint(50, 150)
-            orientation = random.randint(0, 90)
-            location = [random.randint(-300, 300), random.randint(-200, 200)]
-            color = Polygon.get_new_color()
-            border_size = random.randint(1, 10)
-            Polygon.draw_polygon(num_sides, size, orientation, location, color, border_size)
+
+    def generate_polygon(self, n_sides, define_size, orient):
+        num_sides = n_sides
+        # size = random.randint(50, 150)
+        size = define_size
+        orientation = orient
+        location = [random.randint(-300, 300), random.randint(-200, 200)]
+        color = get_new_color()
+        border_size = random.randint(1, 8)
+        return num_sides, size, orientation, location, color, border_size
+
+    def change_position(self, size, location):
+        for i in range(3):
+            # specify a reduction ratio to draw a smaller polygon inside the one above
+            reduction_ratio = 0.618
+
+            # reposition the turtle and get a new location
+            turtle.penup()
+            turtle.forward(size * (1 - reduction_ratio) / 2)
+            turtle.left(90)
+            turtle.forward(size * (1 - reduction_ratio) / 2)
+            turtle.right(90)
+            location[0] = turtle.pos()[0]
+            location[1] = turtle.pos()[1]
+
+            # adjust the size according to the reduction ratio
+            size *= reduction_ratio
+            draw_polygon(num_sides, size, orientation, location, color, border_size)
 
 
-select = input('Which art do you want to generate? Enter a number between 1 to 8, inclusive: ')
-my_generate = DrawPolygon(select)
-my_generate.run()
+draw = Draw()
+print('Which art do you want to generate? Enter a number between 1 to 8,')
+respond = int(input('inclusive: '))
 
+draw.set_background()
+while True:
+    if respond == 1:
+        for i in range(30):
+            num_sides, size, orientation, location, color, border_size = draw.generate_polygon(3, random.randint(50, 100)
+                                                                                               , random.randint(0, 90))
+            draw_polygon(num_sides, size, orientation, location, color, border_size)
+        break
 
+    elif respond == 2:
+        for i in range(30):
+            num_sides, size, orientation, location, color, border_size = draw.generate_polygon(4, random.randint(50, 100)
+                                                                                               , random.randint(0, 90))
+            draw_polygon(num_sides, size, orientation, location, color, border_size)
+        break
+
+    elif respond == 3:
+        for i in range(30):
+            num_sides, size, orientation, location, color, border_size = draw.generate_polygon(5, random.randint(50, 100)
+                                                                                               , random.randint(0, 90))
+            draw_polygon(num_sides, size, orientation, location, color, border_size)
+        break
+
+    elif respond == 4:
+        for i in range(30):
+            num_sides, size, orientation, location, color, border_size = draw.generate_polygon(random.randint(3,5), random.randint(50, 70)
+                                                                                               , random.randint(0, 90))
+            draw_polygon(num_sides, size, orientation, location, color, border_size)
+        break
+
+    elif respond == 5:
+        for i in range(30):
+            num_sides, size, orientation, location, color, border_size = draw.generate_polygon(3,
+                                                                                               random.randint(50, 150)
+                                                                                               , random.randint(0, 90))
+            draw_polygon(num_sides, size, orientation, location, color, border_size)
+            draw.change_position(size, location)
+        break
+
+    elif respond == 6:
+        for i in range(30):
+            num_sides, size, orientation, location, color, border_size = draw.generate_polygon(4,
+                                                                                               random.randint(50, 150)
+                                                                                               , random.randint(0, 90))
+            draw_polygon(num_sides, size, orientation, location, color, border_size)
+            draw.change_position(size, location)
+        break
+
+    elif respond == 7:
+        for i in range(30):
+            num_sides, size, orientation, location, color, border_size = draw.generate_polygon(4,
+                                                                                               random.randint(50, 150)
+                                                                                               , random.randint(0, 90))
+            draw_polygon(num_sides, size, orientation, location, color, border_size)
+            draw.change_position(size, location)
+        break
+
+    elif respond == 8:
+        for i in range(30):
+            num_sides, size, orientation, location, color, border_size = draw.generate_polygon(random.randint(3, 5),
+                                                                                               random.randint(50, 150)
+                                                                                               , random.randint(0, 90))
+            draw_polygon(num_sides, size, orientation, location, color, border_size)
+            draw.change_position(size, location)
+        break
+
+# draw the second polygon embedded inside the original
+# draw_polygon(num_sides, size, orientation, location, color, border_size)
+
+# hold the window; close it by clicking the window close 'x' mark
+turtle.done()
